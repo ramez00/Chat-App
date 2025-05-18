@@ -27,10 +27,18 @@
             prox.on("newMessage", function (name, message) {
                 $('ul').append('<li><strong>' + name + '</strong>: ' + message + '</li>');
             });
+
+            prox.on("newMember", function (name, grpName) {
+                $('ul').append('<li><i>' + name + ' Joined to </i>: ' + grpName + '</li>');
+            });
+
+            prox.on("messageGrp", function (msg, name, grpName) {
+                $('ul').append('<li>' + name + ' ( From ' + grpName + ' ) </i> msg => : ' + msg + '</li>');
+            });
         })
 
         
-        // 5. Calling Server Method send
+   // 5. Calling Server Method send
 
         function send() {
             // Call the Send method on the hub
@@ -38,6 +46,17 @@
             $('#txt').val('');
         }
 
+        function joinGrp() {
+            // Call the Send method on the hub
+            prox.invoke("joinGroup", name, $('#gtxt').val());
+            $('#gtxt').val('');
+        }
+
+        function sendToGrp() {
+            // Call the Send method on the hub
+            prox.invoke("sendGroup", name, $('#txt').val(), $('#gtxt').val());
+            $('#txt').val('');
+        }
 
     </script>
     <meta charset="utf-8" />
@@ -46,8 +65,19 @@
 <body>
     <input type="text" id="txt" />
     <button onClick="send()"> Send</button>
+    <br />
+    <br />
+
+    <input type="text" id="gtxt" />
+    <input type="button" value="join Group" onClick="joinGrp()"  />
+    <br />
+    <br />
+
+    <input type="button" value="send to group" onClick="sendToGrp()">
+
     <ul>
         <li>Messages</li>
     </ul>
+
 </body>
 </html>
